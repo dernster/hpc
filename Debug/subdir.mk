@@ -5,15 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../Point.cpp \
-../PointCloud.cpp 
+../PointCloud.cpp \
+../main.cpp 
 
 OBJS += \
 ./Point.o \
-./PointCloud.o 
+./PointCloud.o \
+./main.o 
 
 CPP_DEPS += \
 ./Point.d \
-./PointCloud.d 
+./PointCloud.d \
+./main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
