@@ -18,8 +18,6 @@ public:
 	PointCloud();
 	PointCloud(vector<Point>);
 	virtual ~PointCloud();
-
-private:
 	vector<Point> points;
 };
 

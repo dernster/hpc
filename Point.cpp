@@ -7,6 +7,8 @@
 
 #include "Point.h"
 
+int Point::axisComparator = 0;
+
 Point::Point() {
 }
 
@@ -32,12 +34,21 @@ Point& Point::operator=(const Point & p){
 	return (*this);
 }
 
-Point& Point::Point(const Point & p){
+Point::Point(const Point & p){
 	this->b = p.b;
 	this->g = p.g;
 	this->r = p.r;
 	this->x = p.x;
 	this->y = p.y;
 	this->z = p.z;
-	return (*this);
 }
+
+bool Point::lessThan(const Point& p, int axis) const{
+	return (this->coords[axis] < p.coords[axis]);
+}
+
+void Point::setAxisComparator(int axis){
+	Point::axisComparator = axis;
+}
+
+
