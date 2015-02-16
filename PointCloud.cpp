@@ -12,8 +12,8 @@ PointCloud::PointCloud() {
 
 }
 
-PointCloud::PointCloud(vector<Point> points) : points(points){
-
+PointCloud::PointCloud(vector<Point*> points){
+	this->points = points;
 }
 
 PointCloud::~PointCloud() {

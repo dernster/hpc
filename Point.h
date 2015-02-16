@@ -9,20 +9,24 @@
 #define POINT_H_
 
 #include "types.h"
+#include <ios>
+#include <iostream>
+using namespace std;
 
 class Point{
 public:
 	Point();
-	Point(coord_t x, coord_t y, coord_t z, color_t r, color_t g, color_t b);
+	Point(coord_t x, coord_t y, coord_t z, color_t r = 0, color_t g = 0, color_t b = 0);
 	Point& operator=(const Point &);
 	Point(const Point &);
 	bool lessThan(const Point&, int axis) const;
+	friend ostream& operator<< (ostream &out, Point &cPoint);
 	virtual ~Point();
 
 	static void setAxisComparator(int axis);
 	static struct{
-		inline bool operator()(const Point& a,const Point& b){
-			return a.lessThan(b,Point::axisComparator);
+		inline bool operator()(const Point* a,const Point* b){
+			return a->lessThan(*b,Point::axisComparator);
 		}
 	} lessThanFunc;
 

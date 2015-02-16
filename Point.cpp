@@ -51,4 +51,12 @@ void Point::setAxisComparator(int axis){
 	Point::axisComparator = axis;
 }
 
+ostream& operator<< (ostream &out, Point &cPoint)
+{
+	out << "Point: ";
+    out << "xyz(" << cPoint.x << "," << cPoint.y << "," << cPoint.z << ") | "
+    	<< "rgb(" << cPoint.r << "," << cPoint.g << "," << cPoint.b << ")";
+    return out;
+}
+
 

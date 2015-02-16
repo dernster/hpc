@@ -16,9 +16,9 @@ using namespace std;
 class PointCloud {
 public:
 	PointCloud();
-	PointCloud(vector<Point>);
+	PointCloud(vector<Point*>);
 	virtual ~PointCloud();
-	vector<Point> points;
+	vector<Point*> points;
 };
 
 #endif /* POINTCLOUD_H_ */
