@@ -23,6 +23,7 @@ public:
 	friend ostream& operator<< (ostream &out, Point &cPoint);
 	virtual ~Point();
 
+	static double squaredDistance(const Point&,const Point&);
 	static void setAxisComparator(int axis);
 	static struct{
 		inline bool operator()(const Point* a,const Point* b){

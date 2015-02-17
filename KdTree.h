@@ -17,6 +17,7 @@ class KdTree {
 public:
 	KdTree(PointCloud*);
 	KdTree(vector<Point*> points,int depth = 0);
+	void searchNeighbours(Point* point,double squaredDistance,vector<Point*>* neighbours);
 	friend ostream& operator<< (ostream &out, KdTree &tree);
 	virtual ~KdTree();
 private:

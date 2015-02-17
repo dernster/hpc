@@ -59,4 +59,8 @@ ostream& operator<< (ostream &out, Point &cPoint)
     return out;
 }
 
+double Point::squaredDistance(const Point& a ,const Point& b){
+	return pow2(a.x - b.x) + pow2(a.y - b.y) + pow2(a.z - b.z);
+}
+
 

@@ -32,6 +32,15 @@ KdTree::KdTree(vector<Point*> points,int depth){
 		rightTree = new KdTree(toRight,depth+1);
 }
 
+void KdTree::searchNeighbours(Point* srcPoint,double maxSquaredDistance,vector<Point*>* neighbours){
+
+	if (Point::squaredDistance(*srcPoint,*point) < maxSquaredDistance){
+		neighbours->push_back(point);
+	}else{
+
+	}
+}
+
 KdTree::~KdTree() {
 	// TODO Auto-generated destructor stub
 }

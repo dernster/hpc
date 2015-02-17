@@ -11,4 +11,6 @@
 typedef unsigned int color_t;
 typedef double coord_t;
 
+#define pow2(x) (x*x)
+
 #endif /* TYPES_H_ */
