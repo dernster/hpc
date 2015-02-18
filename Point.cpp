@@ -43,6 +43,14 @@ Point::Point(const Point & p){
 	this->z = p.z;
 }
 
+bool Point::operator==(const Point& x){
+	return ((this->x == x.x) && (this->y == x.y) && (this->z == x.z));
+}
+
+bool Point::operator!=(const Point& x){
+	return (!(*this == x));
+}
+
 bool Point::lessThan(const Point& p, int axis) const{
 	return (this->coords[axis] < p.coords[axis]);
 }

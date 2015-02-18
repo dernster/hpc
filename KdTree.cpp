@@ -8,6 +8,8 @@
 #include "KdTree.h"
 #include <algorithm>
 #include "KdNode.h"
+#include <limits>
+#include "types.h"
 
 KdTree::KdTree(PointCloud* cloud) : KdTree(cloud->points,0){
 }
@@ -39,6 +41,39 @@ void KdTree::searchNeighbours(Point* srcPoint,double maxSquaredDistance,vector<P
 	}else{
 
 	}
+}
+
+Point* KdTree::searchClosestNeighbour(Point* testPoint,int depth){
+
+	static Point* guess = NULL;
+	static double bestDist = std::numeric_limits<double>::max();
+
+	double dist = Point::squaredDistance(*point,*testPoint);
+	cout << dist << endl;
+	if (*testPoint == *point)
+		dist = std::numeric_limits<double>::max();
+
+	if (dist < bestDist){
+		guess = point;
+		bestDist = dist;
+	}
+
+	int axis = depth % 3;
+	bool intersects = (ABS(testPoint->coords[axis] - point->coords[axis]) < bestDist);
+
+	if (point->lessThan(*testPoint,axis)){
+		if (rightTree)
+			rightTree->searchClosestNeighbour(testPoint,depth+1);
+		if (intersects && leftTree)
+			leftTree->searchClosestNeighbour(testPoint,depth+1);
+	}else{
+		if (leftTree)
+			leftTree->searchClosestNeighbour(testPoint,depth+1);
+		if (intersects && rightTree)
+			rightTree->searchClosestNeighbour(testPoint,depth+1);
+	}
+
+	return guess;
 }
 
 KdTree::~KdTree() {

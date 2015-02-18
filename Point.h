@@ -20,6 +20,8 @@ public:
 	Point& operator=(const Point &);
 	Point(const Point &);
 	bool lessThan(const Point&, int axis) const;
+	bool operator==(const Point&);
+	bool operator!=(const Point&);
 	friend ostream& operator<< (ostream &out, Point &cPoint);
 	virtual ~Point();
 

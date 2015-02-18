@@ -9,6 +9,7 @@ int main(){
 	points.push_back(new Point(3,2,2));
 	points.push_back(new Point(13,6,4));
 	points.push_back(new Point(7,7,9));
+	points.push_back(new Point(7.1,7,9));
 	points.push_back(new Point(13,50,3));
 	points.push_back(new Point(-3,6,7));
 	points.push_back(new Point(-90,8,15));
@@ -18,7 +19,7 @@ int main(){
 	KdTree tree(points);
 
 	cout << tree << endl;
-
+	cout << *tree.searchClosestNeighbour(new Point(0,3,-1)) << endl;
 
 	return 0;
 
