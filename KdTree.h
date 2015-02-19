@@ -9,6 +9,7 @@
 #define KDTREE_H_
 
 #include "PointCloud.h"
+#include "BPQ.h"
 #include <ios>
 #include <iostream>
 using namespace std;
@@ -25,6 +26,7 @@ private:
 	void printTree(ostream &out,int depth = 0);
 	Point* point;
 	KdTree *leftTree, *rightTree;
+	BPQ* distanceQueue;
 };
 
 #endif /* KDTREE_H_ */

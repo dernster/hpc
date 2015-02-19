@@ -71,4 +71,10 @@ double Point::squaredDistance(const Point& a ,const Point& b){
 	return pow2(a.x - b.x) + pow2(a.y - b.y) + pow2(a.z - b.z);
 }
 
+double Point::getDistanceToTestPoint() const {
+	return distanceToTestPoint;
+}
 
+void Point::setDistanceToTestPoint(double distanceToTestPoint) {
+	this->distanceToTestPoint = distanceToTestPoint;
+}

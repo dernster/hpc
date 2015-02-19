@@ -27,6 +27,9 @@ public:
 
 	static double squaredDistance(const Point&,const Point&);
 	static void setAxisComparator(int axis);
+	double getDistanceToTestPoint() const;
+	void setDistanceToTestPoint(double distanceToTestPoint);
+
 	static struct{
 		inline bool operator()(const Point* a,const Point* b){
 			return a->lessThan(*b,Point::axisComparator);
@@ -53,6 +56,7 @@ public:
 
 private:
 	static int axisComparator;
+	double distanceToTestPoint;
 };
 
 #endif /* POINT_H_ */

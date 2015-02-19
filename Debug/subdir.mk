@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../BPQ.cpp \
 ../KdNode.cpp \
 ../KdTree.cpp \
 ../Point.cpp \
@@ -11,6 +12,7 @@ CPP_SRCS += \
 ../main.cpp 
 
 OBJS += \
+./BPQ.o \
 ./KdNode.o \
 ./KdTree.o \
 ./Point.o \
@@ -18,6 +20,7 @@ OBJS += \
 ./main.o 
 
 CPP_DEPS += \
+./BPQ.d \
 ./KdNode.d \
 ./KdTree.d \
 ./Point.d \
