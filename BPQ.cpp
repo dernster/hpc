@@ -15,10 +15,17 @@ BPQ::~BPQ() {
 	// TODO Auto-generated destructor stub
 }
 
-void BPQ::enqueue(Point* p){
-	if (isFull())
-		queue.pop();
-	queue.push(p);
+void BPQ::enqueue(Point* p,double distance){
+	if (isFull()){
+		if (queue.top()->getDistanceToTestPoint() > distance){
+			queue.pop();
+			p->setDistanceToTestPoint(distance);
+			queue.push(p);
+		}
+	}else{
+		p->setDistanceToTestPoint(distance);
+		queue.push(p);
+	}
 }
 
 bool BPQ::isFull(){
@@ -27,4 +34,14 @@ bool BPQ::isFull(){
 
 double BPQ::getMaxDistance(){
 	return queue.top()->getDistanceToTestPoint();
+}
+
+int BPQ::size(){
+	return queue.size();
+}
+
+Point* BPQ::pop(){
+	Point* p = queue.top();
+	queue.pop();
+	return p;
 }

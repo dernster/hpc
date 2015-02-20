@@ -34,12 +34,71 @@ KdTree::KdTree(vector<Point*> points,int depth){
 		rightTree = new KdTree(toRight,depth+1);
 }
 
-void KdTree::searchNeighbours(Point* srcPoint,double maxSquaredDistance,vector<Point*>* neighbours){
+void KdTree::searchNeighbours(Point* testPoint,vector<Point*>* neighbours,int maxNeighbours,double maxRadius){
+	BPQ* distanceQueue = new BPQ(maxNeighbours);
+	searchNeighboursProcedure(testPoint,maxNeighbours,distanceQueue);
 
-	if (Point::squaredDistance(*srcPoint,*point) < maxSquaredDistance){
-		neighbours->push_back(point);
+	/* erase those points which are beyond the maxRadius limit */
+	double squaredRadius = maxRadius*maxRadius;
+	while(distanceQueue->size() > 0){
+		Point* p = distanceQueue->pop();
+		if ((maxRadius == 0) || (p->getDistanceToTestPoint() < squaredRadius))
+			neighbours->push_back(p);
+	}
+
+	delete distanceQueue;
+}
+
+void KdTree::searchNeighboursTest(Point* testPoint, vector<Point*>* neighbours, int maxNeighbours,double maxRadius){
+	BPQ* distanceQueue = new BPQ(maxNeighbours);
+	searchNeighboursProcedureTest(testPoint,maxNeighbours,distanceQueue);
+
+	/* erase those points which are beyond the maxRadius limit */
+	double squaredRadius = maxRadius*maxRadius;
+	while(distanceQueue->size() > 0){
+		Point* p = distanceQueue->pop();
+		if ((maxRadius == 0) || (p->getDistanceToTestPoint() < squaredRadius))
+			neighbours->push_back(p);
+	}
+
+	delete distanceQueue;
+}
+
+void KdTree::searchNeighboursProcedureTest(Point* testPoint,int maxNeighbours, BPQ* distanceQueue, int depth){
+
+	if (*testPoint != *point)
+		distanceQueue->enqueue(point,Point::squaredDistance(*point,*testPoint));
+
+	if (leftTree)
+		leftTree->searchNeighboursProcedure(testPoint,maxNeighbours,distanceQueue,depth+1);
+
+	if (rightTree)
+		rightTree->searchNeighboursProcedure(testPoint,maxNeighbours,distanceQueue,depth+1);
+}
+
+void KdTree::searchNeighboursProcedure(Point* testPoint,int maxNeighbours, BPQ* distanceQueue, int depth){
+
+	if (*testPoint != *point)
+		distanceQueue->enqueue(point,Point::squaredDistance(*point,*testPoint));
+
+	int axis = depth % 3;
+
+	KdTree *subtree, *otherSubtree;
+	if (point->lessThan(*testPoint,axis)){
+		subtree = rightTree;
+		otherSubtree = leftTree;
 	}else{
+		subtree = leftTree;
+		otherSubtree = rightTree;
+	}
 
+	if (subtree)
+		subtree->searchNeighboursProcedure(testPoint,maxNeighbours,distanceQueue,depth+1);
+
+	if ((!distanceQueue->isFull() || (ABS(point->coords[axis] - testPoint->coords[axis]) < distanceQueue->getMaxDistance()))
+		&&
+		otherSubtree){
+		otherSubtree->searchNeighboursProcedure(testPoint,maxNeighbours,distanceQueue,depth+1);
 	}
 }
 

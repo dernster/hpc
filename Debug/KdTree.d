@@ -1,5 +1,5 @@
 KdTree.d: ../KdTree.cpp ../KdTree.h ../PointCloud.h ../Point.h ../types.h \
- ../KdNode.h
+ ../BPQ.h ../KdNode.h
 
 ../KdTree.h:
 
@@ -8,5 +8,7 @@ KdTree.d: ../KdTree.cpp ../KdTree.h ../PointCloud.h ../Point.h ../types.h \
 ../Point.h:
 
 ../types.h:
+
+../BPQ.h:
 
 ../KdNode.h:

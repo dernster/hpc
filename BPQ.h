@@ -17,9 +17,11 @@ public:
 	BPQ(int maxSize);
 	virtual ~BPQ();
 
-	void enqueue(Point*);
+	void enqueue(Point*,double distance);
 	bool isFull();
 	double getMaxDistance();
+	int size();
+	Point* pop();
 
 	struct distanceComparator{
 		inline bool operator()(const Point* a,const Point* b) const{
