@@ -18,7 +18,9 @@ PointCloud::PointCloud(vector<Point*> points){
 }
 
 PointCloud::~PointCloud() {
-	// TODO Auto-generated destructor stub
+	for(uint i = 0; i < points.size(); i++){
+		delete points[i];
+	}
 }
 
 PointCloud::PointCloud(string fileName){
@@ -57,11 +59,13 @@ PointCloud::PointCloud(string fileName){
 				break;
 			}
 
-			cout << "color " << color << endl;
-
 			if(x != x){
 				continue;
 			}
+
+			cout << "color " << color << endl;
+
+
 
 //			unsigned  r = color & 0xff;
 //			unsigned  g = (color >> 8) & 0xff;
@@ -78,13 +82,38 @@ PointCloud::PointCloud(string fileName){
 }
 
 void PointCloud::save(string fileName){
+//	if (FILE *f = fopen(fileName.c_str(), "wt")){
+//
+//		fprintf(f,"# .PCD v.7 - Point Cloud Data file format\n");
+//		fprintf(f,"VERSION .7\n");
+//		fprintf(f,"FIELDS x y z rgb\n");
+//		fprintf(f,"SIZE 4 4 4 4\n");
+//		fprintf(f,"TYPE F F F F\n");
+//		fprintf(f,"COUNT 1 1 1 1\n");
+//		fprintf(f,"WIDTH %d\n",points.size());
+//		fprintf(f,"HEIGHT 1\n");
+//		fprintf(f,"VIEWPOINT 0 0 0 1 0 0 0\n");
+//		fprintf(f,"POINTS %d\n",points.size());
+//		fprintf(f,"DATA ascii\n");
+//
+//		for(uint i = 0; i < points.size(); i++){
+//			Point* point = points[i];
+//
+//			unsigned int colorR = point->r;
+//			unsigned int colorG = (point->g << 8);
+//			unsigned int colorB = (point->b << 16);
+//			float color_f = colorB | colorG | colorR;
+//			fprintf(f,"%g %g %g %g\n",point->x,point->y,point->z,color_f/2);
+//		}
+//		fclose(f);
+//	}
 	if (FILE *f = fopen(fileName.c_str(), "wt")){
 
 		fprintf(f,"# .PCD v.7 - Point Cloud Data file format\n");
 		fprintf(f,"VERSION .7\n");
 		fprintf(f,"FIELDS x y z rgb\n");
 		fprintf(f,"SIZE 4 4 4 4\n");
-		fprintf(f,"TYPE F F F F\n");
+		fprintf(f,"TYPE F F F U\n");
 		fprintf(f,"COUNT 1 1 1 1\n");
 		fprintf(f,"WIDTH %d\n",points.size());
 		fprintf(f,"HEIGHT 1\n");
@@ -95,11 +124,11 @@ void PointCloud::save(string fileName){
 		for(uint i = 0; i < points.size(); i++){
 			Point* point = points[i];
 
-			unsigned int colorR = point->r;
-			unsigned int colorG = (point->g << 8);
-			unsigned int colorB = (point->b << 16);
-			float color_f = colorB | colorG | colorR;
-			fprintf(f,"%g %g %g %g\n",point->x,point->y,point->z,color_f/2);
+			unsigned color;
+			BYTE(color,0) = point->r;
+			BYTE(color,1) = point->g;
+			BYTE(color,2) = point->b;
+			fprintf(f,"%g %g %g %u\n",point->x,point->y,point->z,color);
 		}
 		fclose(f);
 	}
