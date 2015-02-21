@@ -10,6 +10,7 @@
 
 #include <list>
 #include <vector>
+#include <string>
 #include "Point.h"
 using namespace std;
 
@@ -17,6 +18,8 @@ class PointCloud {
 public:
 	PointCloud();
 	PointCloud(vector<Point*>);
+	PointCloud(string);
+	void save(string);
 	virtual ~PointCloud();
 	vector<Point*> points;
 };

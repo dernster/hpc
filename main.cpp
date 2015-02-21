@@ -1,5 +1,6 @@
 #include "KdTree.h"
 #include <iostream>
+#include <math.h>
 using namespace std;
 
 bool vectorEquals(const vector<Point*>& a, const vector<Point*>& b){
@@ -20,63 +21,65 @@ void printVector(const vector<Point*>& a){
 	}
 }
 
-int main(){
+#define K	(4)
+#define W	(2)
+#define h	(0.2)
 
-	vector<Point*> points;
-	points.push_back(new Point(0,1,2));
-	points.push_back(new Point(3,2,2));
-	points.push_back(new Point(13,6,4));
-	points.push_back(new Point(7,7,9));
-	points.push_back(new Point(7.1,7,9));
-	points.push_back(new Point(13,50,3));
-	points.push_back(new Point(136,5.50,3));
-	points.push_back(new Point(-3,6,7));
-	points.push_back(new Point(-90,8,15));
-	points.push_back(new Point(14,8,30));
-	points.push_back(new Point(136,5.50,3));
+int main()
+{
+	PointCloud cloud("/home/dernster/cloudE.pcd");
 
-	KdTree tree(points);
-	vector<Point*> neighbours, neighboursTest;
-	bool success = true;
-	for(int maxNeighbours = 1; maxNeighbours < 12; maxNeighbours++){
-		for(double maxRadius = 0; maxRadius < 100; maxRadius += 2){
-			cout << "Test for maxNeighbours = " << maxNeighbours << " and maxRadius = " << maxRadius << endl;
-
-			for(unsigned int p = 0; p < points.size(); p++){
-				Point* testPoint = points[p];
-
-				neighbours.clear();
-				neighboursTest.clear();
-
-				tree.searchNeighbours(testPoint,&neighbours,maxNeighbours);
-				tree.searchNeighboursTest(testPoint,&neighboursTest,maxNeighbours);
-
-				success = success && vectorEquals(neighbours,neighboursTest);
-
-				if (!success){
-					cout << "ERROR! point = " << p << endl;
-					cout << "normal:" << endl;
-					printVector(neighbours);
-					cout << "......." << endl;
-					printVector(neighboursTest);
-					break;
-				}
-			}
-		}
-
-		if (!success)
-			break;
-
-		cout << "SABELO!" << endl;
-	}
-
-	if (success)
-		cout << "TODO BIEN!" << endl;
-	else
-		cout << "TODO MAL!" << endl;
-
-
+	cloud.save("/home/dernster/cloudsaved.pcd");
 
 	return 0;
 
+	KdTree tree(&cloud);
+
+	for(uint p = 0; p < cloud.points.size(); p++){
+
+		cout << "processing point " << p << endl;
+
+		Point* point = cloud.points[p];
+		double sum[3] = {0};
+		double constant[3] = {0};
+
+		vector<Point*> neighbours;
+		tree.searchNeighbours(point,&neighbours,K);
+
+		for(uint n = 0; n < neighbours.size(); n++){
+
+			Point* neighbour = neighbours[n];
+
+			double dist[3] = {0}; /* rgb distance */
+
+			vector<Point*> littleNeighboursP, littleNeighboursN;
+			tree.searchNeighbours(point,&littleNeighboursP,W);
+			tree.searchNeighbours(neighbour,&littleNeighboursN,W);
+
+			for(uint d = 0; d < MIN(littleNeighboursP.size(),littleNeighboursN.size()); d++){
+				double val[3];
+
+				for3ig(val,(littleNeighboursP[d]->colors[i] - littleNeighboursN[d]->colors[i]));
+
+				for3masig(dist,val[i]*val[i]);
+			}
+
+			double weight[3];
+			for3ig(weight,exp(-dist[i]/(h*h)));
+
+
+			for3masig(sum,(neighbour->colors[i]*weight[i]));
+			for3masig(constant,weight[i]);
+
+
+		}
+
+		cout << "s " << sum[1] << endl;
+		for3ig(point->colors,((sum[i])/(constant[i])))
+
+	}
+
+	cloud.save("/home/dernster/cloudsaved.pcd");
+
+    return 0;
 }
