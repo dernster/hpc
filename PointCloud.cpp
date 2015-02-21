@@ -7,6 +7,9 @@
 
 #include "PointCloud.h"
 #include <stdio.h>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+#include <math.h>
 
 PointCloud::PointCloud() {
 	// TODO Auto-generated constructor stub
@@ -63,10 +66,6 @@ PointCloud::PointCloud(string fileName){
 				continue;
 			}
 
-			cout << "color " << color << endl;
-
-
-
 //			unsigned  r = color & 0xff;
 //			unsigned  g = (color >> 8) & 0xff;
 //			unsigned  b = (color >> 16) & 0xff;
@@ -75,7 +74,7 @@ PointCloud::PointCloud(string fileName){
 			unsigned char g = BYTE(color,1);
 			unsigned char b = BYTE(color,2);
 
-			points.push_back(new Point(x,y,z,r,g,b));
+			points.push_back(new Point(x,y,z,(color_t)r/255,(color_t)g/255,(color_t)b/255));
 		}
 		fclose(f);
 	}
@@ -125,12 +124,48 @@ void PointCloud::save(string fileName){
 			Point* point = points[i];
 
 			unsigned color;
-			BYTE(color,0) = point->r;
-			BYTE(color,1) = point->g;
-			BYTE(color,2) = point->b;
+			BYTE(color,0) = point->r*255;
+			BYTE(color,1) = point->g*255;
+			BYTE(color,2) = point->b*255;
 			fprintf(f,"%g %g %g %u\n",point->x,point->y,point->z,color);
 		}
 		fclose(f);
+	}
+}
+
+#define sign(x) (((x % 2) == 0) ? 1 : -1)
+
+double uniform(){
+	int randx = rand();
+	double res = ((double)(randx % 100)/100);
+	if (res == 0)
+		res = 0.0000000003;
+	return res;
+}
+
+#define gaussian() sqrt(-2*log(uniform()))*sin(2*M_PI*uniform())
+
+#define limit(x) ((x) < 0) ? 0 : (((x) > 1) ? 1 : (x))
+
+void PointCloud::simulateNoise(int noisePercent){
+
+	/* initialize random seed: */
+	srand (time(NULL));
+
+
+	for(uint i = 0; i < points.size(); i++){
+
+		int moneda = (rand() % 100) + 1;
+
+		if (moneda < noisePercent){
+
+			Point* p = points[i];
+			//01 09
+			p->r = limit(p->r + gaussian())*0.1 + (p->r)*0.9;
+			p->g = limit(p->g + gaussian())*0.1 + (p->g)*0.9;
+			p->b = limit(p->b + gaussian())*0.1 + (p->b)*0.9;
+		}
+
 	}
 }
 

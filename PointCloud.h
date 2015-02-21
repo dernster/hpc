@@ -20,6 +20,7 @@ public:
 	PointCloud(vector<Point*>);
 	PointCloud(string);
 	void save(string);
+	void simulateNoise(int noisePercent);
 	virtual ~PointCloud();
 	vector<Point*> points;
 };

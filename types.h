@@ -11,7 +11,7 @@
 #include <limits.h>
 #include <iostream>
 
-typedef unsigned int color_t;
+typedef float color_t;
 typedef unsigned int uint;
 typedef double coord_t;
 
