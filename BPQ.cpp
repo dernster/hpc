@@ -6,6 +6,9 @@
  */
 
 #include "BPQ.h"
+#include <limits>
+#include <iostream>
+
 
 BPQ::BPQ(int maxSize) {
 	this->maxSize = maxSize;

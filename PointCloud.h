@@ -18,7 +18,7 @@ class PointCloud {
 public:
 	PointCloud();
 	PointCloud(vector<Point*>);
-	PointCloud(string);
+	PointCloud(string,bool pcd = true);
 	void save(string);
 	void simulateNoise(int noisePercent);
 	virtual ~PointCloud();

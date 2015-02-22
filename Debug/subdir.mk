@@ -9,8 +9,10 @@ CPP_SRCS += \
 ../KdTree.cpp \
 ../Point.cpp \
 ../PointCloud.cpp \
+../kn.cpp \
 ../main.cpp \
-../testKdTree.cpp 
+../testKdTree.cpp \
+../testKdTreeRadius.cpp 
 
 OBJS += \
 ./BPQ.o \
@@ -18,8 +20,10 @@ OBJS += \
 ./KdTree.o \
 ./Point.o \
 ./PointCloud.o \
+./kn.o \
 ./main.o \
-./testKdTree.o 
+./testKdTree.o \
+./testKdTreeRadius.o 
 
 CPP_DEPS += \
 ./BPQ.d \
@@ -27,8 +31,10 @@ CPP_DEPS += \
 ./KdTree.d \
 ./Point.d \
 ./PointCloud.d \
+./kn.d \
 ./main.d \
-./testKdTree.d 
+./testKdTree.d \
+./testKdTreeRadius.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

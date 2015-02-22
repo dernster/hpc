@@ -19,12 +19,14 @@ public:
 	KdTree(PointCloud*);
 	KdTree(vector<Point*> points,int depth = 0);
 	void searchNeighbours(Point* testPoint, vector<Point*>* neighbours, int maxNeighbours,double maxRadius = 0);
+	void searchNeighboursRadius(Point* testPoint,vector<Point*>* neighbours,coord_t maxRadius, int depth = 0);
 	Point* searchClosestNeighbour(Point* testPoint, int depth = 0);
 	friend ostream& operator<< (ostream &out, KdTree &tree);
 	virtual ~KdTree();
 
 	/* for test */
 	void searchNeighboursTest(Point* testPoint, vector<Point*>* neighbours, int maxNeighbours,double maxRadius = 0);
+	void searchNeighboursRadiusTest(Point* testPoint,vector<Point*>* neighbours,coord_t maxRadius, int depth = 0);
 private:
 	void printTree(ostream &out,int depth = 0);
 	void searchNeighboursProcedure(Point* testPoint,int maxNeighbours, BPQ* distanceQueue, int depth = 0);

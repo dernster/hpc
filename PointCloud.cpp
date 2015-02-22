@@ -26,7 +26,7 @@ PointCloud::~PointCloud() {
 	}
 }
 
-PointCloud::PointCloud(string fileName){
+PointCloud::PointCloud(string fileName,bool pcd){
 
 //	if (FILE *f = fopen(fileName.c_str(), "rt")){
 //		for (;;){
@@ -51,32 +51,55 @@ PointCloud::PointCloud(string fileName){
 //		}
 //		fclose(f);
 //	}
+	if (pcd){
+		if (FILE *f = fopen(fileName.c_str(), "rt")){
+			for (;;){
+				float x = 0;
+				float y = 0;
+				float z = 0;
+				unsigned int color = 0;
+				if (fscanf(f, "%f %f %f %u", &x, &y, &z, &color) != 4){
+					break;
+				}
 
-	if (FILE *f = fopen(fileName.c_str(), "rt")){
-		for (;;){
-			float x = 0;
-			float y = 0;
-			float z = 0;
-			unsigned int color = 0;
-			if (fscanf(f, "%f %f %f %u", &x, &y, &z, &color) != 4){
-				break;
+				if(x != x){
+					continue;
+				}
+
+	//			unsigned  r = color & 0xff;
+	//			unsigned  g = (color >> 8) & 0xff;
+	//			unsigned  b = (color >> 16) & 0xff;
+
+				unsigned char r = BYTE(color,0);
+				unsigned char g = BYTE(color,1);
+				unsigned char b = BYTE(color,2);
+
+				points.push_back(new Point(x,y,z,(color_t)r/255,(color_t)g/255,(color_t)b/255));
 			}
-
-			if(x != x){
-				continue;
-			}
-
-//			unsigned  r = color & 0xff;
-//			unsigned  g = (color >> 8) & 0xff;
-//			unsigned  b = (color >> 16) & 0xff;
-
-			unsigned char r = BYTE(color,0);
-			unsigned char g = BYTE(color,1);
-			unsigned char b = BYTE(color,2);
-
-			points.push_back(new Point(x,y,z,(color_t)r/255,(color_t)g/255,(color_t)b/255));
+			fclose(f);
 		}
-		fclose(f);
+	}else{
+		if (FILE *f = fopen(fileName.c_str(), "rt")){
+			for (;;){
+				float x = 0;
+				float y = 0;
+				float z = 0;
+				int filler;
+				unsigned int r,g,b;
+
+				if (fscanf(f, "%f %f %f %d %u %u %u", &x, &y, &z, &filler,&r,&g,&b) != 7){
+					break;
+				}
+
+				if(x != x){
+					continue;
+				}
+
+
+				points.push_back(new Point(x,y,z,(color_t)r/255,(color_t)g/255,(color_t)b/255));
+			}
+			fclose(f);
+		}
 	}
 }
 

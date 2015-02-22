@@ -102,6 +102,49 @@ void KdTree::searchNeighboursProcedure(Point* testPoint,int maxNeighbours, BPQ* 
 	}
 }
 
+void KdTree::searchNeighboursRadius(Point* testPoint,vector<Point*>* neighbours,coord_t maxRadius, int depth){
+
+	if (*testPoint != *point){
+		if (Point::squaredDistance(*point,*testPoint) < maxRadius)
+			neighbours->push_back(point);
+	}
+
+	int axis = depth % 3;
+
+	KdTree *subtree, *otherSubtree;
+	if (point->lessThan(*testPoint,axis)){
+		subtree = rightTree;
+		otherSubtree = leftTree;
+	}else{
+		subtree = leftTree;
+		otherSubtree = rightTree;
+	}
+
+	if (subtree)
+		subtree->searchNeighboursRadius(testPoint,neighbours,maxRadius,depth+1);
+
+	if ((ABS(point->coords[axis] - testPoint->coords[axis]) < maxRadius)
+		&&
+		otherSubtree){
+		otherSubtree->searchNeighboursRadius(testPoint,neighbours,maxRadius,depth+1);
+	}
+}
+
+void KdTree::searchNeighboursRadiusTest(Point* testPoint,vector<Point*>* neighbours,coord_t maxRadius, int depth){
+
+	if (*testPoint != *point){
+		if (Point::squaredDistance(*point,*testPoint) < maxRadius)
+			neighbours->push_back(point);
+	}
+
+	if (rightTree)
+		rightTree->searchNeighboursRadius(testPoint,neighbours,maxRadius,depth+1);
+
+	if (leftTree)
+		leftTree->searchNeighboursRadius(testPoint,neighbours,maxRadius,depth+1);
+
+}
+
 Point* KdTree::searchClosestNeighbour(Point* testPoint,int depth){
 
 	static Point* guess = NULL;
